@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: Dividend
+
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: create # 프로젝트 실행 시마다 기존 데이터를 삭제하고 새로 생성. 초기에만 쓰고 나중에 다른 값으로 변경
+      use-new-id-generator-mappings: false # ID 생성 전략과 관련된 속성
+    show-sql: true # SQL 쿼리문 확인 속성
+    defer-datasource-initialization: true # 데이터 초기화 옵션
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:dividend;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
