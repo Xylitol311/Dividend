@@ -1,7 +1,6 @@
 package com.example.dividend.service;
 
 import com.example.dividend.model.Company;
-import com.example.dividend.model.Dividend;
 import com.example.dividend.model.ScrapedResult;
 import com.example.dividend.persist.CompanyRepository;
 import com.example.dividend.persist.DividendRepository;
@@ -9,6 +8,9 @@ import com.example.dividend.persist.entity.CompanyEntity;
 import com.example.dividend.persist.entity.DividendEntity;
 import com.example.dividend.scraper.Scraper;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.Trie;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -19,8 +21,10 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class CompanyService {
-
+    
+    private final Trie trie;
     private final Scraper yahooFinanceScraper;
+
     private final CompanyRepository companyRepository;
     private final DividendRepository dividendRepository;
 
@@ -30,6 +34,10 @@ public class CompanyService {
             throw new RuntimeException("already exists ticker -> " + ticker);
         }
         return storeCompanyAndDividend(ticker);
+    }
+
+    public Page<CompanyEntity> getAllCompany(Pageable pageable) {
+        return this.companyRepository.findAll(pageable);
     }
 
     private Company storeCompanyAndDividend(String ticker) {
