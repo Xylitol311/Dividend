@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/company")
 @AllArgsConstructor
@@ -21,8 +19,9 @@ public class CompanyController {
     private final CompanyService companyService;
 
     @GetMapping("/autocomplete")
-    public ResponseEntity<?> autocomplete(@PathVariable String keyword) {
-        return null;
+    public ResponseEntity<?> autocomplete(@RequestParam String keyword) {
+        var result = this.companyService.autoComplete(keyword);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping
@@ -41,6 +40,7 @@ public class CompanyController {
 
         Company company = this.companyService.save(ticker);
 
+        this.companyService.addAutoCompleteKeyword(company.getName());
         return ResponseEntity.ok(company);
     }
 
