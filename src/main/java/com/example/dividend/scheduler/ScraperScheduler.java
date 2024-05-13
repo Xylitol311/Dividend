@@ -27,7 +27,7 @@ public class ScraperScheduler {
 
     // 일정 주기마다 수행
     // 매일 정각 실행
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "${scheduler.scrap.yahoo}")
     public void yahooFinanceScheduling() {
 
         // 저장된 회사 목록을 조회
