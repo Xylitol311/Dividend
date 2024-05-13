@@ -9,12 +9,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class YahooFinanceScraper implements Scraper {
 
     private static final String STATISTICS_URL = "https://finance.yahoo.com/quote/%s/history?period1=%d&period2=%d&frequency=1mo";
@@ -26,6 +27,7 @@ public class YahooFinanceScraper implements Scraper {
     public ScrapedResult scrap(Company company) {
         var scrapResult = new ScrapedResult();
         scrapResult.setCompany(company);
+
         long now = System.currentTimeMillis() / 1000;
         try {
             String url = String.format(STATISTICS_URL, company.getTicker(), START_TIME, now);
@@ -60,7 +62,7 @@ public class YahooFinanceScraper implements Scraper {
                         .build());
 
             }
-            scrapResult.setDividendEntities(dividends);
+            scrapResult.setDividends(dividends);
 
         } catch (IOException e) {
             e.printStackTrace();
